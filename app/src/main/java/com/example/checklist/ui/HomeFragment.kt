@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import com.example.checklist.R
@@ -27,11 +28,43 @@ class HomeFragment : Fragment() {
             inflater,
             R.layout.fragment_home, container, false
         )
-        binding.lifecycleOwner = viewLifecycleOwner
+
         val application = requireNotNull(this.activity).application
         val viewModel =
             ViewModelProviders.of(this, Factory(application)).get(HomeFragmentViewModel::class.java)
         binding.viewModel = viewModel
+
+        binding.fab.setOnClickListener {
+            findNavController().navigate(
+                HomeFragmentDirections.actionHomeFragmentToAddTaskFragment2(0L)
+            )
+        }
+
+        val adapter = TasksAdapter(
+            TasksAdapter.OnClickListener { task ->
+                viewModel.onTaskClicked(task)
+            }
+        )
+
+        binding.checklist.adapter = adapter
+
+        viewModel.tasks.observe(viewLifecycleOwner, Observer {
+            it?.let {
+                adapter.submitList(it)
+            }
+        })
+
+        binding.lifecycleOwner = viewLifecycleOwner
+
+        viewModel.navigatedToDetail.observe(viewLifecycleOwner, Observer {
+            it?.let {
+                findNavController().navigate(
+                    HomeFragmentDirections.actionHomeFragmentToAddTaskFragment2(it)
+                )
+                viewModel.onNavigateToDetailComplete()
+            }
+        })
+
         return binding.root
     }
 

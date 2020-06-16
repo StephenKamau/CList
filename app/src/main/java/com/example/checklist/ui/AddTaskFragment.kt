@@ -39,16 +39,33 @@ class AddTaskFragment : Fragment() {
         val viewModel = ViewModelProviders.of(this, AddTaskFragmentViewModelFactory(application))
             .get(AddTaskFragmentViewModel::class.java)
         binding.addTaskViewModel = viewModel
-        val taskTitle = binding.taskTitle.editText?.text.toString()
-        val taskDescription = binding.taskDescription.editText?.text.toString()
-        val isComplete = binding.taskCheck.isChecked
+        var isComplete = false
+        binding.taskCheck.setOnCheckedChangeListener { compoundButton, _ ->
+            if (compoundButton.isChecked) {
+                isComplete = true
+            } else if (!compoundButton.isChecked) {
+                isComplete = false
+            }
+        }
         val dateCompleted = LocalDateTime.now().toString()
         val task = Task()
-        task.taskTitle = taskTitle
-        task.description = taskDescription
-        task.dateCompleted = dateCompleted
-        task.isComplete = isComplete
-        viewModel.addTask(task)
+        binding.addTaskBtn.setOnClickListener {
+            if (binding.taskTitle.editText?.text.toString().isNotEmpty()) {
+                task.taskTitle = binding.taskTitle.editText?.text.toString()
+            } else {
+                binding.taskTitle.editText?.error = "Task title is empty"
+            }
+            if (binding.taskDescription.editText?.text.toString().isNotEmpty()) {
+                task.description = binding.taskDescription.editText?.text.toString()
+            } else {
+                binding.taskDescription.editText?.error = "Task title is empty"
+            }
+            if (task.taskTitle.isNotEmpty() && task.description.isNotEmpty()) {
+                task.dateCompleted = dateCompleted
+                task.isComplete = isComplete
+                viewModel.addTask(task)
+            }
+        }
         return binding.root
     }
 }

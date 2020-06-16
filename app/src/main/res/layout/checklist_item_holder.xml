@@ -18,7 +18,6 @@
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:clipToPadding="true"
             app:cardCornerRadius="0dp"
             app:cardElevation="0dp"
             app:strokeColor="@android:color/white"
@@ -30,16 +29,15 @@
 
                 <ImageView
                     android:id="@+id/image_status"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
+                    sleepImage="@{task}"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
                     android:layout_marginStart="8dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginBottom="8dp"
                     android:contentDescription="@string/status_image"
                     android:tint="@color/primaryDarkColor"
-                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintBottom_toBottomOf="@+id/time_created"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/title"
                     tools:src="@drawable/ic_outline_hourglass_empty_24" />
 
                 <com.google.android.material.textview.MaterialTextView
@@ -47,6 +45,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
                     android:layout_marginEnd="8dp"
                     android:text="@{task.taskTitle}"
                     android:textAppearance="@style/TextAppearance.AppCompat.Large"
@@ -54,36 +53,38 @@
                     app:fontFamily="@font/work_sans_semibold"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/image_status"
-                    app:layout_constraintTop_toTopOf="@+id/image_status"
+                    app:layout_constraintTop_toTopOf="parent"
                     tools:text="Wash the car" />
 
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/time_created"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
                     android:layout_marginTop="4dp"
-                    android:text="@{task.dateCreated}"
+                    android:layout_marginBottom="8dp"
+                    android:text="@{task.dateSimpleFormatter}"
                     android:textColor="@color/primaryColor"
-                    app:layout_constraintBottom_toBottomOf="@+id/image_status"
-                    app:layout_constraintStart_toEndOf="@+id/image_status"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="@+id/title"
                     app:layout_constraintTop_toBottomOf="@+id/title"
                     tools:text="Wash the car" />
 
                 <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/status"
+                    android:id="@+id/time_completed"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="4dp"
                     android:layout_marginEnd="8dp"
-                    android:text="@{task.dateCompleted}"
+                    android:layout_marginBottom="8dp"
+                    android:text="@{task.dateSimpleFormatter}"
                     android:textColor="@color/primaryColor"
-                    app:layout_constraintBottom_toBottomOf="@+id/time_created"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/time_created"
-                    app:layout_constraintTop_toTopOf="@+id/time_created"
+                    app:layout_constraintTop_toBottomOf="@+id/title"
+                    app:layout_constraintVertical_bias="1.0"
                     tools:text="Wash the car" />
-
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </com.google.android.material.card.MaterialCardView>

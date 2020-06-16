@@ -8,13 +8,21 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.checklist.database.Task
 import com.example.checklist.databinding.ChecklistItemHolderBinding
 
-class TasksAdapter(val onClickListener: OnClickListener) :
+class TasksAdapter(private val onClickListener: OnClickListener) :
     ListAdapter<Task, TasksAdapter.TaskViewHolder>(DiffCallBack) {
     class TaskViewHolder(private var binding: ChecklistItemHolderBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(task: Task) {
             binding.task = task
             binding.executePendingBindings()
+        }
+
+        companion object {
+            fun from(parent: ViewGroup): TaskViewHolder {
+                val layoutInflater = LayoutInflater.from(parent.context)
+                val binding = ChecklistItemHolderBinding.inflate(layoutInflater, parent, false)
+                return TaskViewHolder(binding)
+            }
         }
     }
 
@@ -30,7 +38,7 @@ class TasksAdapter(val onClickListener: OnClickListener) :
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TaskViewHolder {
-        return TaskViewHolder(ChecklistItemHolderBinding.inflate(LayoutInflater.from(parent.context)))
+        return TaskViewHolder.from(parent)
     }
 
     override fun onBindViewHolder(holder: TaskViewHolder, position: Int) {

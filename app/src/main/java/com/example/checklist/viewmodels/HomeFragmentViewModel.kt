@@ -12,10 +12,20 @@ class HomeFragmentViewModel(application: Application) : AndroidViewModel(applica
     private val viewModelJob = Job()
     private val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
     val tasks: LiveData<List<Task>> = database.taskDao.getAllTasks()
+    private val _navigateToDetail = MutableLiveData<Long>()
+    val navigatedToDetail: LiveData<Long> get() = _navigateToDetail
 
     override fun onCleared() {
         super.onCleared()
         viewModelJob.cancel()
+    }
+
+    fun onTaskClicked(task: Task) {
+        _navigateToDetail.value = task.id
+    }
+
+    fun onNavigateToDetailComplete() {
+        _navigateToDetail.value = null
     }
 }
 
